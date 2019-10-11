@@ -60,6 +60,8 @@ public class Pathfinding : MonoBehaviour
                 }
             }
         }
+
+        Debug.Log("走不到啦");
     }
 
     void RetracePath(Node startNode, Node endNode)
