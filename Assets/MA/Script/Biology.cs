@@ -17,7 +17,7 @@ public class Biology : MonoBehaviour
     public FireSpell fireSpell;
     bool IsMove;
     List<Node> Path;
-    int PathIndex;
+    [SerializeField] int PathIndex;
 
     // Start is called before the first frame update
     void Start()
@@ -57,18 +57,19 @@ public class Biology : MonoBehaviour
 
     private void MoveMovement()
     {
-        if (Path == null || Path.Count == 0) return;
+        if (Path == null) return;
         IsMove = false;
         if (PathIndex >= Path.Count) return;
         Vector3 nodePos = Path[PathIndex].worldPosition;
         nodePos = new Vector3(nodePos.x, transform.position.y, nodePos.z);
-        if (Vector3.Distance(transform.position, nodePos) < 0.25f) PathIndex++;
-        GoalPos = nodePos;
+        if (Vector3.Distance(transform.position, nodePos) < 0.2f) PathIndex++;
+
         if (Vector3.Distance(transform.position, GoalPos) < 0.01f) return;
         if (Animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) return;
 
         IsMove = true;
-        transform.position = Vector3.MoveTowards(transform.position, GoalPos, MoveSpeed);
+        transform.position = Vector3.MoveTowards(transform.position, nodePos, MoveSpeed);
+        FaceTo(nodePos);
 
         Animator.SetFloat("Step", Step * MoveSpeed);
     }
